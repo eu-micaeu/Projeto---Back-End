@@ -3,9 +3,9 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 const authenticate = require('../middleware/authenticate');
 
-router.post('/register', userController.register);
+router.post('/register', userController.registerUser);
 
-router.post('/login', userController.login);
+router.post('/login', userController.loginUser);
 
 router.put('/update/:id', authenticate, userController.updateUser);
 

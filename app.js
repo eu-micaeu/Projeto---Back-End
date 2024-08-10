@@ -25,7 +25,7 @@ const swaggerOptions = {
 
   },
 
-  apis: ['./routes/*.js'],
+  apis: ['./controllers/*.js'],
 
 };
 

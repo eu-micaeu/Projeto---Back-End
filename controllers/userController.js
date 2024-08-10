@@ -2,7 +2,40 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-exports.register = async (req, res) => {
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Gerenciamento de usuários
+ */
+
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Cria um novo usuário no sistema.
+ *     tags: 
+ *       - Users
+ *     description: Cria um novo usuário no sistema.
+ *     requestBody:
+ *       description: User object that needs to be added to the system
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User created successfully
+ *       400:
+ *         description: Invalid input
+ */
+exports.registerUser = async (req, res) => {
 
   try {
 
@@ -20,7 +53,33 @@ exports.register = async (req, res) => {
 
 };
 
-exports.login = async (req, res) => {
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Autentica um usuário no sistema.
+ *     tags: 
+ *       - Users
+ *     description: Autentica um usuário no sistema.
+ *     requestBody:
+ *       description: User login credentials
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successful login
+ *       401:
+ *         description: Unauthorized
+ */
+exports.loginUser = async (req, res) => {
 
   const { username, password } = req.body;
 
@@ -30,7 +89,7 @@ exports.login = async (req, res) => {
 
     if (!user || !(await bcrypt.compare(password, user.password))) {
 
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Credênciais inválidas' });
 
     }
 
@@ -46,6 +105,43 @@ exports.login = async (req, res) => {
 
 };
 
+/**
+ * @swagger
+ * /update/{id}:
+ *   put:
+ *     summary: Atualiza as informações de um usuário no sistema. Requer autenticação.
+ *     tags: 
+ *       - Users
+ *     description: Atualiza as informações de um usuário no sistema. Requer autenticação.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user to update
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       description: Updated user object
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User updated successfully
+ *       400:
+ *         description: Invalid input
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
 exports.updateUser = async (req, res) => {
 
   const { id } = req.params;
@@ -56,7 +152,7 @@ exports.updateUser = async (req, res) => {
 
     const user = await User.findByPk(id);
 
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
 
     if (username) user.username = username;
 
@@ -80,6 +176,29 @@ exports.updateUser = async (req, res) => {
 
 };
 
+/**
+ * @swagger
+ * /delete/{id}:
+ *   delete:
+ *     summary: Remove um usuário do sistema. Requer autenticação.
+ *     tags: 
+ *       - Users
+ *     description: Remove um usuário do sistema. Requer autenticação.
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user to delete
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       404:
+ *         description: User not found
+ */
 exports.deleteUser = async (req, res) => {
 
   const { id } = req.params;
@@ -87,11 +206,11 @@ exports.deleteUser = async (req, res) => {
   try {
 
     const user = await User.findByPk(id);
-
-    if (!user) return res.status(404).json({ error: 'User not found' });
+    
+    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
 
     await user.destroy();
-    
+
     res.json({ message: 'User deleted' });
 
   } catch (error) {
