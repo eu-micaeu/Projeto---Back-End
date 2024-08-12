@@ -5,10 +5,16 @@ const authenticate = require('../middleware/authenticate');
 
 router.post('/register', userController.registerUser);
 
-router.post('/login', userController.loginUser);
+router.get('/login', userController.loginUser);
 
 router.put('/update/:id', authenticate, userController.updateUser);
 
 router.delete('/delete/:id', authenticate, userController.deleteUser);
+
+router.post('/createAdmin', authenticate, userController.createAdmin);
+
+router.delete('/deleteUserbyAdmin/:id', authenticate, userController.deleteUserbyAdmin);
+
+router.get('/allUsers', authenticate, userController.allUsers);
 
 module.exports = router;

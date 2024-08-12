@@ -2,7 +2,7 @@ const express = require('express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const userRoutes = require('./routes/userRoutes');
-const installRoute = require('./routes/installRoute');
+const installRoutes = require('./routes/installRoutes');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -35,7 +35,7 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use('/api/users', userRoutes);
 
-app.use('/api', installRoute);
+app.use('/api', installRoutes);
 
 const PORT = process.env.PORT;
 

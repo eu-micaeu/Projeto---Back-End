@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 /**
  * @swagger
@@ -18,7 +20,7 @@ const bcrypt = require('bcryptjs');
  *       - Users
  *     description: Cria um novo usuário no sistema.
  *     requestBody:
- *       description: User object that needs to be added to the system
+ *       description:
  *       required: true
  *       content:
  *         application/json:
@@ -31,9 +33,9 @@ const bcrypt = require('bcryptjs');
  *                 type: string
  *     responses:
  *       201:
- *         description: User created successfully
+ *         description:
  *       400:
- *         description: Invalid input
+ *         description: 
  */
 exports.registerUser = async (req, res) => {
 
@@ -56,13 +58,13 @@ exports.registerUser = async (req, res) => {
 /**
  * @swagger
  * /login:
- *   post:
+ *   get:
  *     summary: Autentica um usuário no sistema.
  *     tags: 
  *       - Users
  *     description: Autentica um usuário no sistema.
  *     requestBody:
- *       description: User login credentials
+ *       description:
  *       required: true
  *       content:
  *         application/json:
@@ -75,9 +77,9 @@ exports.registerUser = async (req, res) => {
  *                 type: string
  *     responses:
  *       200:
- *         description: Successful login
+ *         description: 
  *       401:
- *         description: Unauthorized
+ *         description: 
  */
 exports.loginUser = async (req, res) => {
 
@@ -85,9 +87,9 @@ exports.loginUser = async (req, res) => {
 
   try {
 
-    const user = await User.findOne({ where: { username } });
+    const user = await User.findOne({ where: { username, password } });
 
-    if (!user || !(await bcrypt.compare(password, user.password))) {
+    if (!user) {
 
       return res.status(401).json({ error: 'Credênciais inválidas' });
 
@@ -117,7 +119,7 @@ exports.loginUser = async (req, res) => {
  *       - in: path
  *         name: id
  *         required: true
- *         description: The ID of the user to update
+ *         description:
  *         schema:
  *           type: string
  *     requestBody:
@@ -134,13 +136,13 @@ exports.loginUser = async (req, res) => {
  *                 type: string
  *     responses:
  *       200:
- *         description: User updated successfully
+ *         description: 
  *       400:
- *         description: Invalid input
+ *         description: 
  *       401:
- *         description: Unauthorized
+ *         description: 
  *       404:
- *         description: User not found
+ *         description: 
  */
 exports.updateUser = async (req, res) => {
 
@@ -152,21 +154,29 @@ exports.updateUser = async (req, res) => {
 
     const user = await User.findByPk(id);
 
-    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
+    // Verifica se o usuário existe
+    if (!user) {
 
-    if (username) user.username = username;
-
-    if (password) {
-
-      const salt = await bcrypt.genSalt(10);
-
-      user.password = await bcrypt.hash(password, salt);
+      return res.status(404).json({ error: 'Usuário não encontrado' });
 
     }
 
-    await user.save();
+    if (id !== req.user.id) {
 
-    res.json(user);
+      if (req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Não autorizado' });
+
+      }
+
+      if (username) user.username = username;
+      if (password) user.password = password;
+
+      await user.save();
+
+      res.json(user);
+
+    }
 
   } catch (error) {
 
@@ -188,16 +198,16 @@ exports.updateUser = async (req, res) => {
  *       - in: path
  *         name: id
  *         required: true
- *         description: The ID of the user to delete
+ *         description:
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: User deleted successfully
+ *         description: Usário deletado
  *       401:
- *         description: Unauthorized
+ *         description: 
  *       404:
- *         description: User not found
+ *         description: 
  */
 exports.deleteUser = async (req, res) => {
 
@@ -206,17 +216,189 @@ exports.deleteUser = async (req, res) => {
   try {
 
     const user = await User.findByPk(id);
-    
-    if (!user) return res.status(404).json({ error: 'Usuário não encontrado' });
 
-    await user.destroy();
+    // Verifica se o usuário existe
+    if (!user) {
 
-    res.json({ message: 'User deleted' });
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+
+    }
+
+    if (id !== req.user.id) {
+
+      await user.destroy();
+
+      res.json({ message: 'Usário deletado' });
+
+    }
+
+    return res.status(401).json({ error: 'Não autorizado' });
 
   } catch (error) {
 
     res.status(500).json({ error: error.message });
 
   }
-  
+
 };
+
+/**
+ * @swagger
+ * /createAdmin:
+ *   post:
+ *     summary: Cria um novo admin no sistema.
+ *     tags: 
+ *       - Users
+ *     description: Cria um novo admin no sistema.
+ *     requestBody:
+ *       description:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: 
+ *       400:
+ *         description: 
+ */
+exports.createAdmin = async (req, res) => {
+
+  try {
+
+    if (req.user.role !== 'admin') {
+
+      return res.status(401).json({ error: 'Não autorizado' });
+
+    }
+
+    const { username, password } = req.body;
+
+    const user = await User.create({ username, password, role: 'admin' });
+
+    res.status(201).json(user);
+
+  } catch (error) {
+
+    res.status(400).json({ error: error.message });
+
+  }
+
+};
+
+/**
+ * @swagger
+ * /deleteUserbyAdmin/{id}:
+ *   delete:
+ *     summary: Apaga um usuário do sistema. Requer autenticação de admin.
+ *     tags: 
+ *       - Users
+ *     description: Apaga um usuário do sistema. Requer autenticação de admin.
+ *     requestBody:
+ *       description:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usário deletado
+ *       400:
+ *         description: 
+ */
+exports.deleteUserbyAdmin = async (req, res) => {
+
+  const { id } = req.params;
+
+  try {
+
+    if (req.user.role !== 'admin') {
+
+      return res.status(401).json({ error: 'Não autorizado' });
+
+    }
+
+    const user = await User.findByPk(id);
+
+    // Verifica se o usuário existe
+    if (!user) {
+
+      return res.status(404).json({ error: 'Usuário não encontrado' });
+
+    }
+
+    await user.destroy();
+
+    res.json({ message: 'Usário deletado' });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+};
+
+/**
+ * @swagger
+ * /allUsers?limit=x&page=y:
+ *   get:
+ *     summary: Lista todos os usuários com paginação.
+ *     tags: 
+ *       - Users
+ *     description: Lista todos os usuários com suporte a paginação. É possível definir o limite de registros por página e qual página acessar.
+ *     parameters:
+ *       - in: query
+ *         name: limit
+ *         required: true
+ *         schema:
+ *           type: integer
+ *           enum: [5, 10, 30]
+ *       - in: query
+ *         name: page
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Lista de usuários com base nos parâmetros de paginação
+ *       400:
+ *         description: Requisição inválida
+ */
+
+exports.allUsers = async (req, res) => {
+
+  const { limit, page } = req.query;
+
+  // Verifica se os parâmetros estão corretos
+  if (![5, 10, 30].includes(parseInt(limit)) || isNaN(parseInt(page)) || parseInt(page) <= 0) {
+    return res.status(400).json({ error: 'Parâmetros inválidos. O limite deve ser 5, 10 ou 30 e a página deve ser maior que 0.' });
+  }
+
+  const limitValue = parseInt(limit);
+  const pageValue = parseInt(page);
+
+  try {
+    const users = await User.findAll({
+      limit: limitValue,
+      offset: (pageValue - 1) * limitValue
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
