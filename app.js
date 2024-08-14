@@ -19,15 +19,15 @@ const swaggerOptions = {
 
     info: {
 
-      title: 'Documentação da API',
+      title: 'Documentação da API do Projeto de Back-End',
 
-      version: '1.0.0',
+      version: '1.0.7',
 
     },
 
   },
 
-  apis: ['./routes/*.js'],
+  apis: ['./controllers/*.js'],
 
 };
 
