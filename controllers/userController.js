@@ -154,7 +154,6 @@ exports.updateUser = async (req, res) => {
 
     const user = await User.findByPk(id);
 
-    // Verifica se o usuário existe
     if (!user) {
 
       return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -170,6 +169,7 @@ exports.updateUser = async (req, res) => {
       }
 
       if (username) user.username = username;
+
       if (password) user.password = password;
 
       await user.save();
@@ -217,7 +217,6 @@ exports.deleteUser = async (req, res) => {
 
     const user = await User.findByPk(id);
 
-    // Verifica se o usuário existe
     if (!user) {
 
       return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -332,7 +331,6 @@ exports.deleteUserbyAdmin = async (req, res) => {
 
     const user = await User.findByPk(id);
 
-    // Verifica se o usuário existe
     if (!user) {
 
       return res.status(404).json({ error: 'Usuário não encontrado' });
@@ -377,28 +375,55 @@ exports.deleteUserbyAdmin = async (req, res) => {
  *       400:
  *         description: Requisição inválida
  */
-
 exports.allUsers = async (req, res) => {
 
   const { limit, page } = req.query;
 
-  // Verifica se os parâmetros estão corretos
   if (![5, 10, 30].includes(parseInt(limit)) || isNaN(parseInt(page)) || parseInt(page) <= 0) {
+
     return res.status(400).json({ error: 'Parâmetros inválidos. O limite deve ser 5, 10 ou 30 e a página deve ser maior que 0.' });
+
   }
 
   const limitValue = parseInt(limit);
+
   const pageValue = parseInt(page);
 
   try {
+
     const users = await User.findAll({
+
       limit: limitValue,
+
       offset: (pageValue - 1) * limitValue
+
     });
 
     res.status(200).json(users);
+
   } catch (error) {
+
     res.status(500).json({ error: error.message });
+
   }
+
 };
 
+// Função para mostrar a quantidade de users e admins
+exports.countUsers = async (req, res) => {
+
+  try {
+
+    const users = await User.count({ where: { role: 'user' } });
+
+    const admins = await User.count({ where: { role: 'admin' } });
+
+    res.json({ users, admins });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+};

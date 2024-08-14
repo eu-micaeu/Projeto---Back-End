@@ -7,8 +7,6 @@ module.exports = (req, res, next) => {
 
   const token = req.headers['authorization'];
 
-  console.log(token);
-
   if (!token) return res.status(401).json({ error: 'Acesso negado' });
 
   try {
@@ -17,8 +15,6 @@ module.exports = (req, res, next) => {
 
     req.user = verified;
 
-    console.log(verified);
-
     next();
 
   } catch (error) {
@@ -26,4 +22,5 @@ module.exports = (req, res, next) => {
     res.status(400).json({ error: 'Token inválido' });
 
   }
+  
 };

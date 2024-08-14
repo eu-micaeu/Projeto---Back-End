@@ -1,33 +1,39 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-class User extends Model {}
+class User extends Model { }
 
 User.init({
 
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
+    user_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
 
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
 
-  role: {
-    type: DataTypes.STRING,
-    defaultValue: 'user',
-  },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: 'user',
+    },
 
 }, {
 
-  sequelize,
-
-  modelName: 'User',
-
-  timestamps: false // Isso desativa a criação dos campos createdAt e updatedAt
+    sequelize,
+  
+    modelName: 'User',
+  
+    timestamps: false
 
 });
 

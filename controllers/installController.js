@@ -1,5 +1,7 @@
+const sequalize = require('../config/database');
 const User = require('../models/User');
-const sequelize = require('../models/User');
+const Product = require('../models/Product');
+const Address = require('../models/Address');
 
 /**
  * @swagger
@@ -34,25 +36,41 @@ const sequelize = require('../models/User');
  *       500:
  *         description: Erro ao criar o banco de dados ou o usuário administrador
  */
-
 exports.install = async (req, res) => {
 
     const { username, password } = req.body;
 
     try {
 
-        await sequelize.sync({ force: true });
+        await sequalize.sync({ force: true });
 
-        const user = await User.create({ username, password, role: 'admin' });
+        const usuario = await User.create({ username, password, role: 'admin' });
 
-        // Criando 30 usuários de teste
-        for (let i = 0; i < 30; i++) {
+        await User.bulkCreate([
+            { username: 'joaoRefrigeracao', password: 'frioGelado123', role: 'user' },
+            { username: 'mariaLavagem', password: 'limpezaTotal', role: 'user' },
+            { username: 'carlosCozinha', password: 'chefDeCasa', role: 'user' },
+            { username: 'anaTvSom', password: 'cinemaEmCasa', role: 'user' },
+            { username: 'pedroEletro', password: 'energiaTotal', role: 'user' }
+        ]);
 
-            await User.create({ username: `user${i}`, password: `123456`, role: 'user' });
-            
-        }
+        await Product.bulkCreate([
+            { name: 'Geladeira Frost Free', price: '1200.00', description: 'Geladeira usada, com função Frost Free.', user_id: usuario.user_id },
+            { name: 'Máquina de Lavar 10kg', price: '800.00', description: 'Máquina de lavar seminova, capacidade para 10kg.', user_id: usuario.user_id + 1 },
+            { name: 'Fogão 4 Bocas', price: '400.00', description: 'Fogão usado, 4 bocas com acendimento automático.', user_id: usuario.user_id + 2 },
+            { name: 'TV LED 42"', price: '900.00', description: 'TV LED de 42 polegadas, ótima para a sala de estar.', user_id: usuario.user_id + 3 },
+            { name: 'Micro-ondas 20L', price: '250.00', description: 'Micro-ondas usado, capacidade de 20 litros.', user_id: usuario.user_id + 4 }
+        ]);
 
-        res.status(201).json({ message: 'Banco de dados criado e usuário administrador inserido!', user });
+        await Address.bulkCreate([
+            { street: 'Rua dos Eletros', number: '101', city: 'Recife', state: 'Pernambuco', user_id: usuario.user_id },
+            { street: 'Avenida das Lavadoras', number: '202', city: 'São Paulo', state: 'São Paulo', user_id: usuario.user_id + 1 },
+            { street: 'Travessa dos Fogões', number: '303', city: 'Belo Horizonte', state: 'Minas Gerais', user_id: usuario.user_id + 2 },
+            { street: 'Rua das Telas', number: '404', city: 'Rio de Janeiro', state: 'Rio de Janeiro', user_id: usuario.user_id + 3 },
+            { street: 'Avenida dos Micro-ondas', number: '505', city: 'Curitiba', state: 'Paraná', user_id: usuario.user_id + 4 }
+        ]);
+
+        res.status(201).json({ message: 'Banco de dados criado e usuário administrador inserido!' });
 
     } catch (error) {
 

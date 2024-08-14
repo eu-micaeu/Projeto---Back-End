@@ -2,6 +2,8 @@ const express = require('express');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const userRoutes = require('./routes/userRoutes');
+const productRoutes = require('./routes/productRoutes');
+const addressRoutes = require('./routes/addressRoutes');
 const installRoutes = require('./routes/installRoutes');
 const dotenv = require('dotenv');
 
@@ -25,7 +27,7 @@ const swaggerOptions = {
 
   },
 
-  apis: ['./controllers/*.js', './routes/*.js'],
+  apis: ['./routes/*.js'],
 
 };
 
@@ -34,6 +36,10 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use('/api/users', userRoutes);
+
+app.use('/api/products', productRoutes);
+
+app.use('/api/address', addressRoutes);
 
 app.use('/api', installRoutes);
 

@@ -17,4 +17,6 @@ router.delete('/deleteUserbyAdmin/:id', authenticate, userController.deleteUserb
 
 router.get('/allUsers', authenticate, userController.allUsers);
 
+router.get('/countUsers', authenticate, userController.countUsers);
+
 module.exports = router;
