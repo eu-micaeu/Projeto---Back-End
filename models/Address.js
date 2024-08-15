@@ -3,12 +3,15 @@ const sequelize = require('../config/database');
 
 class Addres extends Model { }
 
+// Modelo de endereço
 Addres.init({
 
     addres_id: {
 
         type: DataTypes.INTEGER,
+        
         primaryKey: true,
+
         autoIncrement: true,
 
     },
@@ -16,6 +19,7 @@ Addres.init({
     street: {
 
         type: DataTypes.STRING,
+
         allowNull: false,
 
     },
@@ -23,6 +27,7 @@ Addres.init({
     number: {
 
         type: DataTypes.STRING,
+
         allowNull: false,
 
     },
@@ -30,6 +35,7 @@ Addres.init({
     city: {
 
         type: DataTypes.STRING,
+
         allowNull: false,
 
     },
@@ -37,6 +43,7 @@ Addres.init({
     state: {
 
         type: DataTypes.STRING,
+
         allowNull: false,
 
     },
@@ -44,10 +51,15 @@ Addres.init({
     user_id: {
 
         type: DataTypes.INTEGER,
+
         allowNull: false,
+
         references: {
+
             model: 'Users',
+
             key: 'user_id',
+
         }
 
     }

@@ -38,13 +38,21 @@ dotenv.config();
  *         description: Erro na requisição.
  */
 exports.registerUser = async (req, res) => {
+  
   try {
+
     const { username, password } = req.body;
+
     const user = await User.create({ username, password });
+
     res.status(201).json(user);
+
   } catch (error) {
+
     res.status(400).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -74,17 +82,28 @@ exports.registerUser = async (req, res) => {
  *         description: Credenciais inválidas.
  */
 exports.loginUser = async (req, res) => {
+
   const { username, password } = req.body;
+
   try {
+
     const user = await User.findOne({ where: { username, password } });
+
     if (!user) {
       return res.status(401).json({ error: 'Credênciais inválidas' });
+
     }
+
     const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
     res.json({ token });
+
   } catch (error) {
+
     res.status(500).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -125,24 +144,41 @@ exports.loginUser = async (req, res) => {
  *         description: Usuário não encontrado.
  */
 exports.updateUser = async (req, res) => {
+
   const { id } = req.params;
+
   const { username, password } = req.body;
 
   try {
+
     const user = await User.findByPk(id);
+
     if (!user) {
+
       return res.status(404).json({ error: 'Usuário não encontrado' });
+
     }
+
     if (id !== req.user.id && req.user.role !== 'admin') {
+
       return res.status(401).json({ error: 'Não autorizado' });
+
     }
+
     if (username) user.username = username;
+
     if (password) user.password = password;
+
     await user.save();
+
     res.json(user);
+
   } catch (error) {
+
     res.status(400).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -169,21 +205,35 @@ exports.updateUser = async (req, res) => {
  *         description: Usuário não encontrado.
  */
 exports.deleteUser = async (req, res) => {
+
   const { id } = req.params;
 
   try {
+
     const user = await User.findByPk(id);
+
     if (!user) {
+
       return res.status(404).json({ error: 'Usuário não encontrado' });
+
     }
+
     if (id !== req.user.id && req.user.role !== 'admin') {
+
       return res.status(401).json({ error: 'Não autorizado' });
+
     }
+
     await user.destroy();
+
     res.json({ message: 'Usuário deletado' });
+
   } catch (error) {
+
     res.status(500).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -215,16 +265,27 @@ exports.deleteUser = async (req, res) => {
  *         description: Não autorizado.
  */
 exports.createAdmin = async (req, res) => {
+
   try {
+
     if (req.user.role !== 'admin') {
+
       return res.status(401).json({ error: 'Não autorizado' });
+
     }
+
     const { username, password } = req.body;
+
     const user = await User.create({ username, password, role: 'admin' });
+
     res.status(201).json(user);
+
   } catch (error) {
+
     res.status(400).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -253,21 +314,34 @@ exports.createAdmin = async (req, res) => {
  *         description: Usuário não encontrado.
  */
 exports.deleteUserbyAdmin = async (req, res) => {
+
   const { id } = req.params;
 
   try {
+
     if (req.user.role !== 'admin') {
+
       return res.status(401).json({ error: 'Não autorizado' });
+
     }
     const user = await User.findByPk(id);
+
     if (!user) {
+
       return res.status(404).json({ error: 'Usuário não encontrado' });
+      
     }
+
     await user.destroy();
+
     res.json({ message: 'Usuário deletado' });
+
   } catch (error) {
+
     res.status(500).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -302,21 +376,33 @@ exports.allUsers = async (req, res) => {
   const { limit, page } = req.query;
 
   if (![5, 10, 30].includes(parseInt(limit)) || isNaN(parseInt(page)) || parseInt(page) <= 0) {
+
     return res.status(400).json({ error: 'Parâmetros inválidos. O limite deve ser 5, 10 ou 30 e a página deve ser maior que 0.' });
+
   }
 
   const limitValue = parseInt(limit);
+
   const pageValue = parseInt(page);
 
   try {
+
     const users = await User.findAll({
+
       limit: limitValue,
+
       offset: (pageValue - 1) * limitValue
+
     });
+
     res.status(200).json(users);
+
   } catch (error) {
+
     res.status(500).json({ error: error.message });
+
   }
+
 };
 
 /**
@@ -334,11 +420,19 @@ exports.allUsers = async (req, res) => {
  *         description: Requisição inválida.
  */
 exports.countUsers = async (req, res) => {
+
   try {
+
     const users = await User.count({ where: { role: 'user' } });
+
     const admins = await User.count({ where: { role: 'admin' } });
+
     res.json({ users, admins });
+
   } catch (error) {
+
     res.status(500).json({ error: error.message });
+
   }
+
 };

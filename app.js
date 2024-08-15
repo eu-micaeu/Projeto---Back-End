@@ -13,7 +13,7 @@ const app = express();
 
 app.use(express.json());
 
-const swaggerOptions = {
+const swagger = {
 
   swaggerDefinition: {
 
@@ -31,18 +31,18 @@ const swaggerOptions = {
 
 };
 
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
+const swaggerDocs = swaggerJsdoc(swagger);
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs)); // Rota para a documentação da API
 
-app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes); // Rota para usuários
 
-app.use('/api/products', productRoutes);
+app.use('/api/products', productRoutes); // Rota para produtos
 
-app.use('/api/address', addressRoutes);
+app.use('/api/address', addressRoutes); // Rota para endereços
 
-app.use('/api', installRoutes);
+app.use('/api', installRoutes); // Rota para instalação
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT; // Porta do servidor
 
 app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));

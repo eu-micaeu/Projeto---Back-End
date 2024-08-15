@@ -73,6 +73,7 @@ exports.createAddress = async (req, res) => {
   try {
 
     const address = await Address.create({ street, number, city, state, user_id });
+
     res.status(201).json({ message: 'Endereço criado com sucesso!', address });
 
   } catch (error) {

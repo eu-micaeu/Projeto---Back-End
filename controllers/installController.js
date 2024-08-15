@@ -38,13 +38,11 @@ const Address = require('../models/Address');
  */
 exports.install = async (req, res) => {
 
-    const { username, password } = req.body;
-
     try {
 
         await sequalize.sync({ force: true });
 
-        const usuario = await User.create({ username, password, role: 'admin' });
+        const usuario = await User.create({ username: 'admin', password: 'admin', role: 'admin' });
 
         await User.bulkCreate([
             { username: 'joaoRefrigeracao', password: 'frioGelado123', role: 'user' },

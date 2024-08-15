@@ -5,17 +5,18 @@ dotenv.config();
 
 const sequelize = new Sequelize(
 
-  process.env.DB_NAME,
+  process.env.DB_NAME, // Nome do banco de dados
 
-  process.env.DB_USER,
+  process.env.DB_USER, // Usuário
 
-  process.env.DB_PASS,
+  process.env.DB_PASS, // Senha
 
   {
 
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST, // Host
     
-    dialect: 'postgres',
+    dialect: 'postgres', // Dialeto
+
   }
 
 );
