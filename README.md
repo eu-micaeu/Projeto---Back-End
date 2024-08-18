@@ -20,3 +20,10 @@ Esta API foi desenvolvida como parte do projeto de Back-End para a disciplina de
 ## Utilização da API
 
 Para testar e consumir os endpoints da API, foi utilizado o Postman, uma plataforma poderosa que permite aos desenvolvedores projetar, construir, testar e colaborar em APIs.
+
+### Começo:
+
+Para criar o banco de dados e o usuário admin, a primeira rota a ser utilizada é a:
+```
+POST /install
+```
