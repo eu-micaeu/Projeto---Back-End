@@ -23,6 +23,8 @@ Para testar e consumir os endpoints da API, foi utilizado o Postman, uma platafo
 
 ### Começo:
 
+Para acessar a documentação do projeto, acesse o link: 'localhost:3000/docs' no seu navegador.
+
 Para criar o banco de dados e o usuário admin, a primeira rota a ser utilizada é a:
 ```
 POST /install
