@@ -6,7 +6,7 @@ class Addres extends Model { }
 // Modelo de endereço
 Addres.init({
 
-    addres_id: {
+    addres_id: { // Coluna de ID do endereço
 
         type: DataTypes.INTEGER,
         
@@ -16,7 +16,7 @@ Addres.init({
 
     },
 
-    street: {
+    street: { // Coluna de rua do endereço
 
         type: DataTypes.STRING,
 
@@ -24,7 +24,7 @@ Addres.init({
 
     },
 
-    number: {
+    number: { // Coluna de número do endereço
 
         type: DataTypes.STRING,
 
@@ -32,7 +32,7 @@ Addres.init({
 
     },
 
-    city: {
+    city: { // Coluna de cidade do endereço
 
         type: DataTypes.STRING,
 
@@ -40,7 +40,7 @@ Addres.init({
 
     },
 
-    state: {
+    state: { // Coluna do estado do endereço
 
         type: DataTypes.STRING,
 
@@ -48,7 +48,7 @@ Addres.init({
 
     },
 
-    user_id: {
+    user_id: { // Coluna de ID do usuário
 
         type: DataTypes.INTEGER,
 
@@ -66,11 +66,11 @@ Addres.init({
 
 }, {
 
-    sequelize,
+    sequelize, // Conexão com o banco de dados
 
-    modelName: 'Addres',
+    modelName: 'Addres', // Nome do modelo
 
-    timestamps: false
+    timestamps: false // Não cria colunas de data de criação e atualização
 
 });
 

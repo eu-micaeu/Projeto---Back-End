@@ -6,7 +6,7 @@ class Product extends Model { }
 // Modelo de produto
 Product.init({
 
-    product_id: {
+    product_id: { // Coluna de ID do produto
 
         type: DataTypes.INTEGER,
 
@@ -16,7 +16,7 @@ Product.init({
 
     },
 
-    name: {
+    name: { // Coluna de nome do produto
 
         type: DataTypes.STRING,
 
@@ -24,7 +24,7 @@ Product.init({
 
     },
 
-    price: {
+    price: { // Coluna de preço do produto
 
         type: DataTypes.STRING,
 
@@ -32,7 +32,7 @@ Product.init({
 
     },
 
-    description: {
+    description: { // Coluna de descrição do produto
 
         type: DataTypes.STRING,
 
@@ -40,7 +40,7 @@ Product.init({
 
     },
 
-    user_id: {
+    user_id: { // Coluna de ID do usuário
 
         type: DataTypes.INTEGER,
 
@@ -58,11 +58,11 @@ Product.init({
 
 }, {
 
-    sequelize,
+    sequelize, // Conexão com o banco de dados
 
-    modelName: 'Product',
+    modelName: 'Product', // Nome do model
 
-    timestamps: false
+    timestamps: false // Não cria colunas de data de criação e atualização
 
 });
 

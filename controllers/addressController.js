@@ -53,8 +53,6 @@ const Address = require('../models/Address');
  *                 message:
  *                   type: string
  *                   example: Endereço criado com sucesso!
- *                 address:
- *                   $ref: '#/components/schemas/Address'
  *       400:
  *         description: Erro na requisição.
  *         content:

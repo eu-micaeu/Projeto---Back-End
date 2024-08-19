@@ -49,8 +49,6 @@ const Product = require('../models/Product');
  *                 message:
  *                   type: string
  *                   example: Produto criado com sucesso!
- *                 product:
- *                   $ref: '#/components/schemas/Product'
  *       400:
  *         description: Erro na requisição.
  *         content:

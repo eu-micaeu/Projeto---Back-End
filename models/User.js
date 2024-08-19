@@ -6,7 +6,7 @@ class User extends Model { }
 // Modelo de usuário
 User.init({
 
-    user_id: {
+    user_id: { // Coluna de ID
 
       type: DataTypes.INTEGER,
 
@@ -16,7 +16,7 @@ User.init({
 
     },
 
-    username: {
+    username: { // Coluna de nome de usuário
 
       type: DataTypes.STRING,
 
@@ -26,7 +26,7 @@ User.init({
 
     },
 
-    password: {
+    password: { // Coluna de senha
 
       type: DataTypes.STRING,
 
@@ -34,7 +34,7 @@ User.init({
 
     },
 
-    role: {
+    role: { // Coluna de função
 
       type: DataTypes.STRING,
       
@@ -44,11 +44,11 @@ User.init({
 
 }, {
 
-    sequelize,
+    sequelize, // Conexão com o banco de dados
   
-    modelName: 'User',
+    modelName: 'User', // Nome do modelo
   
-    timestamps: false
+    timestamps: false // Não cria colunas de data de criação e atualização
 
 });
 

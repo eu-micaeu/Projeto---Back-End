@@ -9,11 +9,11 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const app = express();
+const app = express(); // Inicializa o servidor
 
-app.use(express.json());
+app.use(express.json()); // Permite o uso de JSON nas requisições
 
-const swagger = {
+const swagger = { // Configuração do Swagger
 
   swaggerDefinition: {
 
@@ -31,7 +31,7 @@ const swagger = {
 
 };
 
-const swaggerDocs = swaggerJsdoc(swagger);
+const swaggerDocs = swaggerJsdoc(swagger); // Documentação da API
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs)); // Rota para a documentação da API
 
@@ -45,4 +45,4 @@ app.use('/api', installRoutes); // Rota para instalação
 
 const PORT = process.env.PORT; // Porta do servidor
 
-app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`));
+app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`)); // Inicia o servidor
