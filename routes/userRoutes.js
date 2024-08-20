@@ -7,9 +7,9 @@ router.post('/register', userController.registerUser);
 
 router.get('/login', userController.loginUser);
 
-router.put('/update/:id', authenticate, userController.updateUser);
+router.put('/updateUser/:id', authenticate, userController.updateUser);
 
-router.delete('/delete/:id', authenticate, userController.deleteUser);
+router.delete('/deleteUser/:id', authenticate, userController.deleteUser);
 
 router.post('/createAdmin', authenticate, userController.createAdmin);
 

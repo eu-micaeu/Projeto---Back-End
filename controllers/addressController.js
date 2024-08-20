@@ -80,7 +80,11 @@ exports.createAddress = async (req, res) => {
 
   if (user_id !== req.user_id) {
 
-    return res.status(401).json({ error: 'Operação não permitida.' });
+    if(req.user.role !== 'admin') {
+
+      return res.status(401).json({ error: 'Operação não permitida.' });
+
+    }
     
   }
 
@@ -167,7 +171,11 @@ exports.getAddress = async (req, res) => {
 
     if (address.user_id !== req.user_id) {
 
-      return res.status(401).json({ error: 'Operação não permitida.' });
+      if(req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Operação não permitida.' });
+  
+      }
 
     }
 
@@ -268,7 +276,11 @@ exports.updateAddress = async (req, res) => {
 
     if (address.user_id !== req.user_id) {
 
-      return res.status(401).json({ error: 'Operação não permitida.' });
+      if(req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Operação não permitida.' });
+  
+      }
 
     }
 
@@ -344,7 +356,11 @@ exports.deleteAddress = async (req, res) => {
 
     if (address.user_id !== req.user_id) {
 
-      return res.status(401).json({ error: 'Operação não permitida.' });
+      if(req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Operação não permitida.' });
+  
+      }
 
     }
 

@@ -74,10 +74,14 @@ exports.createProduct = async (req, res) => {
 
   const { name, price, description, user_id } = req.body;
 
-  if (user_id !== req.user_id) {
+  if (user_id !== req.user_id)  {
 
-    return res.status(401).json({ error: 'Operação não permitida.' });
-    
+    if(req.user.role !== 'admin') {
+
+      return res.status(401).json({ error: 'Operação não permitida.' });
+
+    }
+
   }
 
   try {
@@ -155,9 +159,13 @@ exports.getProduct = async (req, res) => {
 
     }
 
-    if (product.user_id !== req.user_id) {
+    if (product.user_id !== req.user_id)  {
 
-      return res.status(401).json({ error: 'Operação não permitida.' });
+      if(req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Operação não permitida.' });
+
+      }
 
     }
 
@@ -250,9 +258,13 @@ exports.updateProduct = async (req, res) => {
 
     }
 
-    if (product.user_id !== req.user_id) {
+    if (product.user_id !== req.user_id)  {
 
-      return res.status(401).json({ error: 'Operação não permitida.' });
+      if(req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Operação não permitida.' });
+
+      }
 
     }
 
@@ -329,9 +341,13 @@ exports.deleteProduct = async (req, res) => {
 
     }
 
-    if (product.user_id !== req.user_id) {
+    if (product.user_id !== req.user_id)  {
 
-      return res.status(401).json({ error: 'Operação não permitida.' });
+      if(req.user.role !== 'admin') {
+
+        return res.status(401).json({ error: 'Operação não permitida.' });
+
+      }
 
     }
 

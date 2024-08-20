@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Address = require('../models/Address');
+const Product = require('../models/Product');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
@@ -94,7 +96,7 @@ exports.loginUser = async (req, res) => {
 
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ user_id: user.user_id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.json({ token });
 
@@ -218,11 +220,23 @@ exports.deleteUser = async (req, res) => {
 
     }
 
-    if (id !== req.user.id && req.user.role !== 'admin') {
+    console.log(req.user.user_id);
 
-      return res.status(401).json({ error: 'Não autorizado' });
+    console.log(id);
+
+    if (id != req.user.user_id) {
+
+      if (req.user.role != 'admin'){
+
+        return res.status(401).json({ error: 'Não autorizado' });
+
+      }
 
     }
+
+    Address.destroy({ where: { user_id: id } });
+
+    Product.destroy({ where: { user_id: id } });
 
     await user.destroy();
 
@@ -331,6 +345,10 @@ exports.deleteUserbyAdmin = async (req, res) => {
       return res.status(404).json({ error: 'Usuário não encontrado' });
       
     }
+
+    Address.destroy({ where: { user_id: id } });
+
+    Product.destroy({ where: { user_id: id } });
 
     await user.destroy();
 

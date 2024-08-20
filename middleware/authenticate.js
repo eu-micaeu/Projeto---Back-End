@@ -8,7 +8,11 @@ module.exports = (req, res, next) => {
 
   const token = req.headers['authorization']; // Obter token do cabeçalho
 
-  if (!token) return res.status(401).json({ error: 'Acesso negado' }); // Verificar se o token foi enviado
+  if (!token) {
+    
+    return res.status(401).json({ error: 'Acesso negado' }); // Verificar se o token foi enviado
+
+  }
 
   try {
 
