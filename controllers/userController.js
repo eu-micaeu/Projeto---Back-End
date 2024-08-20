@@ -161,9 +161,13 @@ exports.updateUser = async (req, res) => {
 
     }
 
-    if (id !== req.user.id && req.user.role !== 'admin') {
+    if (id != req.user.user_id) {
 
-      return res.status(401).json({ error: 'Não autorizado' });
+      if (req.user.role != 'admin'){
+
+        return res.status(401).json({ error: 'Não autorizado' });
+
+      }
 
     }
 
@@ -391,6 +395,7 @@ exports.deleteUserbyAdmin = async (req, res) => {
  *         description: Parâmetros inválidos.
  */
 exports.allUsers = async (req, res) => {
+  
   const { limit, page } = req.query;
 
   if (![5, 10, 30].includes(parseInt(limit)) || isNaN(parseInt(page)) || parseInt(page) <= 0) {
