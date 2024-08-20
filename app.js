@@ -45,4 +45,6 @@ app.use('/api', installRoutes); // Rota para instalação
 
 const PORT = process.env.PORT; // Porta do servidor
 
-app.listen(PORT, () => console.log(`Server rodando na porta ${PORT}`)); // Inicia o servidor
+console.log('=========== API (ADDRESS - USER - PRODUCT) ===========');
+
+app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`)); // Inicia o servidor
