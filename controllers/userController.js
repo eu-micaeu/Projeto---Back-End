@@ -395,6 +395,12 @@ exports.deleteUserbyAdmin = async (req, res) => {
  *         description: Parâmetros inválidos.
  */
 exports.allUsers = async (req, res) => {
+
+  if (req.user.role !== 'admin') {
+
+    return res.status(401).json({ error: 'Não autorizado' });
+
+  }
   
   const { limit, page } = req.query;
 
@@ -443,6 +449,12 @@ exports.allUsers = async (req, res) => {
  *         description: Requisição inválida.
  */
 exports.countUsers = async (req, res) => {
+
+  if (req.user.role !== 'admin') {
+
+    return res.status(401).json({ error: 'Não autorizado' });
+
+  }
 
   try {
 

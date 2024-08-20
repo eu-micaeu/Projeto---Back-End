@@ -78,9 +78,13 @@ exports.createAddress = async (req, res) => {
 
   const { street, number, city, state, user_id } = req.body;
 
-  if (user_id !== req.user_id) {
+  if (user_id != req.user.user_id) {
 
-    if(req.user.role !== 'admin') {
+    console.log(req.user.user_id);
+
+    console.log(user_id);
+
+    if(req.user.role != 'admin') {
 
       return res.status(401).json({ error: 'Operação não permitida.' });
 
@@ -169,9 +173,9 @@ exports.getAddress = async (req, res) => {
 
     }
 
-    if (address.user_id !== req.user_id) {
+    if (address.user_id != req.user.user_id) {
 
-      if(req.user.role !== 'admin') {
+      if(req.user.role != 'admin') {
 
         return res.status(401).json({ error: 'Operação não permitida.' });
   
@@ -274,9 +278,9 @@ exports.updateAddress = async (req, res) => {
 
     }
 
-    if (address.user_id !== req.user_id) {
+    if (address.user_id != req.user.user_id) {
 
-      if(req.user.role !== 'admin') {
+      if(req.user.role != 'admin') {
 
         return res.status(401).json({ error: 'Operação não permitida.' });
   
@@ -354,9 +358,9 @@ exports.deleteAddress = async (req, res) => {
 
     }
 
-    if (address.user_id !== req.user_id) {
+    if (address.user_id != req.user.user_id) {
 
-      if(req.user.role !== 'admin') {
+      if(req.user.role != 'admin') {
 
         return res.status(401).json({ error: 'Operação não permitida.' });
   

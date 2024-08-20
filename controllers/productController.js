@@ -74,9 +74,9 @@ exports.createProduct = async (req, res) => {
 
   const { name, price, description, user_id } = req.body;
 
-  if (user_id !== req.user_id)  {
+  if (user_id != req.user.user_id)  {
 
-    if(req.user.role !== 'admin') {
+    if(req.user.role != 'admin') {
 
       return res.status(401).json({ error: 'Operação não permitida.' });
 
@@ -159,7 +159,7 @@ exports.getProduct = async (req, res) => {
 
     }
 
-    if (product.user_id !== req.user_id)  {
+    if (product.user_id != req.user.user_id)  {
 
       if(req.user.role !== 'admin') {
 
@@ -258,7 +258,7 @@ exports.updateProduct = async (req, res) => {
 
     }
 
-    if (product.user_id !== req.user_id)  {
+    if (product.user_id != req.user.user_id)  {
 
       if(req.user.role !== 'admin') {
 
@@ -341,7 +341,7 @@ exports.deleteProduct = async (req, res) => {
 
     }
 
-    if (product.user_id !== req.user_id)  {
+    if (product.user_id != req.user.user_id)  {
 
       if(req.user.role !== 'admin') {
 
