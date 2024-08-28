@@ -54,6 +54,7 @@ exports.install = async (req, res) => {
 
         await Product.bulkCreate([
             { name: 'Geladeira Frost Free', price: '1200.00', description: 'Geladeira usada, com função Frost Free.', user_id: usuario.user_id },
+            { name: 'Ar Condicionado 12000 BTUs', price: '1500.00', description: 'Ar condicionado usado, com 12000 BTUs.', user_id: usuario.user_id },
             { name: 'Máquina de Lavar 10kg', price: '800.00', description: 'Máquina de lavar seminova, capacidade para 10kg.', user_id: usuario.user_id + 1 },
             { name: 'Fogão 4 Bocas', price: '400.00', description: 'Fogão usado, 4 bocas com acendimento automático.', user_id: usuario.user_id + 2 },
             { name: 'TV LED 42"', price: '900.00', description: 'TV LED de 42 polegadas, ótima para a sala de estar.', user_id: usuario.user_id + 3 },

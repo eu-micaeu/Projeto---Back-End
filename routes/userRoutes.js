@@ -19,4 +19,6 @@ router.get('/allUsers', authenticate, userController.allUsers);
 
 router.get('/countUsers', authenticate, userController.countUsers);
 
+router.get('/somePrice/:id', authenticate, userController.somePrice);
+
 module.exports = router;
