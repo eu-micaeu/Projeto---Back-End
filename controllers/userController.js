@@ -471,3 +471,38 @@ exports.countUsers = async (req, res) => {
   }
 
 };
+
+exports.somePrice = async (req, res) => {
+ 
+  const { id } = req.params;
+
+  var total = 0;
+
+  var nomes = [];
+
+  try {
+
+    const products = await Product.findAll({ where: { user_id: id } });
+
+    for (let i = 0; i < products.length; i++) {
+
+      total += products[i].price;
+
+    }
+
+    for (let i = 0; i < products.length; i++) {
+
+      nomes.push(products[i].name);
+
+    }
+
+    res.json({ nomes: nomes, total });
+
+  } catch (error) {
+
+    res.status(500).json({ error: error.message });
+
+  }
+
+
+}

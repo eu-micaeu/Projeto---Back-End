@@ -26,7 +26,7 @@ Product.init({
 
     price: { // Coluna de preço do produto
 
-        type: DataTypes.STRING,
+        type: DataTypes.FLOAT,
 
         allowNull: false,
 
